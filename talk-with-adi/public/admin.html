@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Talk with Adi</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>" />
+</head>
+<body>
+
+  <!-- ============ LOGIN SCREEN (nothing loads until the password is correct) ============ -->
+  <div id="login-screen" class="screen center-screen">
+    <div class="card join-card">
+      <div class="logo">🔐</div>
+      <h1>Admin Dashboard</h1>
+      <p class="muted">This area is private. Enter the admin password<br />(set as <code>ADMIN_PASSWORD</code> in <code>server.js</code>).</p>
+      <input id="password-input" type="password" placeholder="Password" autocomplete="current-password" />
+      <button id="login-btn" class="btn primary block">Login</button>
+      <div id="login-error" class="error hidden"></div>
+    </div>
+  </div>
+
+  <!-- ============ DASHBOARD (revealed only after login) ============ -->
+  <div id="dashboard" class="dashboard hidden">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>💬 Visitors</h2>
+        <button id="logout-btn" class="icon-btn" title="Log out">⎋</button>
+      </div>
+      <ul id="user-list" class="user-list"></ul>
+    </aside>
+
+    <main class="chat-pane">
+      <div id="empty-state" class="empty-state">
+        <div class="big-icon">👈</div>
+        <p>Select a visitor to view the conversation</p>
+        <p class="muted">Each conversation is private — only you and that visitor can see it.</p>
+      </div>
+
+      <div id="chat-panel" class="admin-chat-wrap hidden">
+        <header class="chat-header">
+          <div class="avatar big" id="peer-avatar">?</div>
+          <div class="peer-info">
+            <div class="peer-name" id="peer-name">—</div>
+            <div class="peer-status" id="peer-status">—</div>
+          </div>
+          <button id="call-btn" class="icon-btn" title="Video call this visitor">📹</button>
+        </header>
+
+        <main id="messages" class="messages"></main>
+
+        <div id="typing-indicator" class="typing hidden">Visitor is typing…</div>
+
+        <footer class="composer">
+          <button id="img-btn" class="icon-btn" title="Send a photo">🖼️</button>
+          <input type="file" id="img-input" accept="image/*" hidden />
+          <textarea id="msg-input" placeholder="Reply as Adi…" rows="1" maxlength="4000"></textarea>
+          <button id="send-btn" class="btn primary">Send</button>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============ INCOMING CALL MODAL ============ -->
+  <div id="incoming-call" class="modal hidden">
+    <div class="card modal-card">
+      <div class="logo pulse">📹</div>
+      <h2>Incoming video call</h2>
+      <p class="muted" id="incoming-from">A visitor is calling…</p>
+      <div class="modal-actions">
+        <button id="accept-call-btn" class="btn success">Accept</button>
+        <button id="decline-call-btn" class="btn danger">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ IN-CALL OVERLAY ============ -->
+  <div id="call-overlay" class="call-overlay hidden">
+    <video id="remote-video" autoplay playsinline></video>
+    <video id="local-video" class="pip" autoplay playsinline muted></video>
+    <div id="call-status" class="call-status"></div>
+    <div class="call-controls">
+      <button id="toggle-cam" class="icon-btn round" title="Toggle camera">📷</button>
+      <button id="toggle-mic" class="icon-btn round" title="Toggle microphone">🎤</button>
+      <button id="end-call-btn" class="btn danger round-big" title="End call">✕</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

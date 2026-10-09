@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talk with Adi</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+</head>
+<body>
+
+  <!-- ============ JOIN SCREEN ============ -->
+  <div id="join-screen" class="screen center-screen">
+    <div class="card join-card">
+      <div class="logo">💬</div>
+      <h1>Talk with Adi</h1>
+      <p class="muted">Private chat — only Adi can see your messages.<br />Other visitors cannot see you.</p>
+      <input id="name-input" type="text" maxlength="40" placeholder="Enter your name" autocomplete="off" />
+      <button id="join-btn" class="btn primary block">Start chatting</button>
+      <div id="join-error" class="error hidden"></div>
+    </div>
+  </div>
+
+  <!-- ============ CHAT SCREEN ============ -->
+  <div id="chat-screen" class="screen chat-screen hidden">
+    <header class="chat-header">
+      <div class="avatar big">A</div>
+      <div class="peer-info">
+        <div class="peer-name">Adi</div>
+        <div class="peer-status" id="conn-status">connecting…</div>
+      </div>
+      <button id="call-btn" class="icon-btn" title="Video call Adi">📹</button>
+    </header>
+
+    <main id="messages" class="messages"></main>
+
+    <div id="typing-indicator" class="typing hidden">Adi is typing…</div>
+
+    <footer class="composer">
+      <button id="img-btn" class="icon-btn" title="Send a photo">🖼️</button>
+      <input type="file" id="img-input" accept="image/*" hidden />
+      <textarea id="msg-input" placeholder="Type a message…" rows="1" maxlength="4000"></textarea>
+      <button id="send-btn" class="btn primary">Send</button>
+    </footer>
+  </div>
+
+  <!-- ============ INCOMING CALL MODAL ============ -->
+  <div id="incoming-call" class="modal hidden">
+    <div class="card modal-card">
+      <div class="logo pulse">📹</div>
+      <h2>Incoming video call</h2>
+      <p class="muted" id="incoming-from">Adi is calling you…</p>
+      <div class="modal-actions">
+        <button id="accept-call-btn" class="btn success">Accept</button>
+        <button id="decline-call-btn" class="btn danger">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ IN-CALL OVERLAY ============ -->
+  <div id="call-overlay" class="call-overlay hidden">
+    <video id="remote-video" autoplay playsinline></video>
+    <video id="local-video" class="pip" autoplay playsinline muted></video>
+    <div id="call-status" class="call-status"></div>
+    <div class="call-controls">
+      <button id="toggle-cam" class="icon-btn round" title="Toggle camera">📷</button>
+      <button id="toggle-mic" class="icon-btn round" title="Toggle microphone">🎤</button>
+      <button id="end-call-btn" class="btn danger round-big" title="End call">✕</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
